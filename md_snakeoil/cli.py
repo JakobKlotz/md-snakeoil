@@ -5,11 +5,11 @@ from typing_extensions import Annotated
 
 from md_snakeoil.apply import Formatter
 
-app = typer.Typer()
+app = typer.Typer(help="Format and lint Python code blocks in Markdown files.")
 
 
 @app.command()
-def format_file(
+def file(
     file_path: Annotated[
         Path, typer.Argument(exists=True, dir_okay=False, file_okay=True)
     ],
@@ -26,7 +26,7 @@ def format_file(
         ),
     ] = "I,W",
 ):
-    """Format Python code blocks in a Markdown file."""
+    """Process a single Markdown."""
     formatter = Formatter(
         line_length=line_length, rules=tuple(rules.split(","))
     )
@@ -35,7 +35,7 @@ def format_file(
 
 
 @app.command()
-def format_dir(
+def directory(
     directory_path: Annotated[
         Path, typer.Argument(exists=True, dir_okay=True)
     ],
@@ -53,8 +53,7 @@ def format_dir(
     ] = "I,W",
 ):
     """
-    Format Python code blocks in all Markdown files
-    in a directory (recursively!).
+    Format all Markdown files within a directory (recursively!).
     """
     formatter = Formatter(
         line_length=line_length, rules=tuple(rules.split(","))
