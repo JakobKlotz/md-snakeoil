@@ -67,7 +67,7 @@ class Formatter:
 
             return code
 
-    def format_markdown_content(self, content: str) -> str:
+    def format_markdown_content(self, *, file_name: str, content: str) -> str:
         """Replace code blocks in markdown content with formatted versions."""
         result = content
         offset = 0
@@ -76,26 +76,31 @@ class Formatter:
         # works with attributes like ```python title="example" ... as well
         pattern = r"```((?:python|py)(?:[^\n]*)\n)(.*?)```"
 
-        for match in re.finditer(pattern, content, re.DOTALL):
-            # preserve the language tag and any attributes
-            lang_tag = match.group(1)
-            original_block = match.group(2).strip()
-            formatted_block = self.format_single_block(original_block)
+        matches = list(re.finditer(pattern, content, re.DOTALL))
+        if len(matches) == 0:
+            print(f"No Python code blocks found in {file_name}.")
+        else:
+            for match in matches:
+                # for match in re.finditer(pattern, content, re.DOTALL):
+                # preserve the language tag and any attributes
+                lang_tag = match.group(1)
+                original_block = match.group(2).strip()
+                formatted_block = self.format_single_block(original_block)
 
-            # calculate positions considering the offset from
-            # previous replacements
-            start = match.start() + offset
-            end = match.end() + offset
+                # calculate positions considering the offset from
+                # previous replacements
+                start = match.start() + offset
+                end = match.end() + offset
 
-            # reconstruct the code block with original backticks and
-            # language tag
-            new_block = f"```{lang_tag}{formatted_block}\n```"
+                # reconstruct the code block with original backticks and
+                # language tag
+                new_block = f"```{lang_tag}{formatted_block}\n```"
 
-            # replace the entire block
-            result = result[:start] + new_block + result[end:]
+                # replace the entire block
+                result = result[:start] + new_block + result[end:]
 
-            # update offset
-            offset += len(new_block) - (end - start)
+                # update offset
+                offset += len(new_block) - (end - start)
 
         return result
 
@@ -119,7 +124,9 @@ class Formatter:
 
         file_path = Path(file_path)
         markdown = self.read_markdown(file_path)
-        formatted_content = self.format_markdown_content(markdown)
+        formatted_content = self.format_markdown_content(
+            file_name=str(file_path), content=markdown
+        )
 
         if inplace:
             self.write_markdown(formatted_content, file_path)

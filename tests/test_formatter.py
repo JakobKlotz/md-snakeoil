@@ -25,7 +25,9 @@ def test_format_single_block():
 
 def test_format_markdown_content(example_markdown):
     formatter = Formatter()
-    formatted_content = formatter.format_markdown_content(example_markdown)
+    formatted_content = formatter.format_markdown_content(
+        file_name="test.md", content=example_markdown
+    )
 
     # check if the formatted content has the expected changes
     assert "x = [1, 2, 344, 3]" in formatted_content
