@@ -8,6 +8,7 @@ authors = ["Jakob Klotz <jakob.klotz@mci.edu>"]
 
 [tool.poetry.dependencies]
 python = "^3.12"
+ruff = "^0.7.3"  # used within the project to format & lint
 
 
 [tool.poetry.group.dev.dependencies]
