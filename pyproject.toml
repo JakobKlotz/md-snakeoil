@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "Format and lint Python code blocks within markdown files."
 readme = "README.md"
 authors = ["Jakob Klotz <jakob.klotz@mci.edu>"]
-
+license = "MIT"
 
 [tool.poetry.dependencies]
 python = "^3.12"
