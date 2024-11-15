@@ -1,5 +1,9 @@
 # md-snakeoil
 
+<p align="center">
+    <img src=".assets/md-snakeoil.png" width="400" height="400">
+</p>
+
 A Python package/CLI to format and lint Python code blocks within Markdown 
 files.
 Specifically designed for Markdown files used with 
@@ -7,6 +11,18 @@ Specifically designed for Markdown files used with
 
 `md-snakeoil` is built on the awesome [`ruff`](https://docs.astral.sh/ruff/)
 formatter and linter and helps you to keep your Markdown files looking sharp.
+
+<p align="center">
+    <img src=".assets/before-after.png">
+</p>
+
+<hr>
+
+## Installation
+
+```bash
+pip install md-snakeoil
+```
 
 ## Command Line Interface
 
@@ -17,9 +33,9 @@ The CLI has two main commands:
 2. `directory`: Recursively formats and lints Python code blocks in all
    Markdown files within a directory.
 
-### Usage
+## Usage
 
-#### Help
+### Help
 
 ```bash
 snakeoil --help
@@ -45,13 +61,13 @@ By default, the line length is set to 79 characters, and the Ruff rules `W` and
 `I` are enabled. You can change these defaults using the `--line-length` and
 `--rules` options.
 
-#### Single Markdown
+### Single Markdown
 
 ```bash
 snakeoil file path/to/file.md
 ```
 
-#### Formatting all files in a directory
+### Formatting all files in a directory
 
 ```bash
 snakeoil directory path/to/directory
