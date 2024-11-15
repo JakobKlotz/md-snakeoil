@@ -1,10 +1,12 @@
 # md-snakeoil
 
-A Python package to format and lint Python code blocks within Markdown files.
-Specifically designed for Markdown files used with `mkdocs-material`.
+A Python package/CLI to format and lint Python code blocks within Markdown 
+files.
+Specifically designed for Markdown files used with 
+[`mkdocs-material`](https://squidfunk.github.io/mkdocs-material/).
 
-`md-snakeoil` is built on the awesome `ruff` formatter and linter and helps you
-to keep your Markdown files looking sharp.
+`md-snakeoil` is built on the awesome [`ruff`](https://docs.astral.sh/ruff/)
+formatter and linter and helps you to keep your Markdown files looking sharp.
 
 ## Command Line Interface
 
