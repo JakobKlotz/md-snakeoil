@@ -20,6 +20,11 @@ pytest = "^8.3.3"
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
+
+[tool.poetry.scripts]
+snakeoil = "md_snakeoil.cli:app"
+
+
 [tool.ruff]
 line-length = 79
 lint.select = [
