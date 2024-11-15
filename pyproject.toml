@@ -1,0 +1,42 @@
+[tool.poetry]
+name = "md_snakeoil"
+version = "0.1.0"
+description = "Format and lint Python code blocks within markdown files."
+readme = "README.md"
+authors = ["Jakob Klotz <jakob.klotz@mci.edu>"]
+
+
+[tool.poetry.dependencies]
+python = "^3.12"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.3"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+line-length = 79
+lint.select = [
+    "E",
+    "W",
+    "I",
+    "N",
+    "F",
+    "B",
+    "PT",
+    "RET",
+    "SIM",
+    "TID",
+    "ARG",
+    "PTH",
+    "ERA",
+    "PD",
+]
+lint.unfixable = ["E501"]
+
+[pytest]
+testpaths = ["tests"]
