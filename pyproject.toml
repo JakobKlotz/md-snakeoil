@@ -8,6 +8,8 @@ authors = ["Jakob Klotz <jakob.klotz@mci.edu>"]
 
 [tool.poetry.dependencies]
 python = "^3.12"
+ruff = "^0.7.3"  # used within the project to format & lint
+typer = "^0.13.0"
 
 
 [tool.poetry.group.dev.dependencies]
@@ -17,6 +19,11 @@ pytest = "^8.3.3"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+
+[tool.poetry.scripts]
+snakeoil = "md_snakeoil.cli:app"
+
 
 [tool.ruff]
 line-length = 79
