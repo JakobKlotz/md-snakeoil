@@ -13,7 +13,7 @@ class Formatter:
     """
 
     def __init__(
-        self, line_length: int = 79, rules: tuple[str] = ("I", "W")
+        self, line_length: int = 79, rules: tuple[str, ...] = ("I", "W")
     ) -> None:
         self.line_length = line_length
         self.rules = rules
