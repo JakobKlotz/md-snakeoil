@@ -2,7 +2,7 @@
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
 
 <p align="center">
-    <img src=".assets/md-snakeoil.png" width="400" height="400">
+    <img src="https://raw.githubusercontent.com/mciwing/md-snakeoil/refs/heads/main/.assets/md-snakeoil.png" width="400" height="400">
 </p>
 
 A Python package/CLI to format and lint Python code blocks within Markdown 
@@ -14,7 +14,7 @@ Specifically designed for Markdown files used with
 formatter and linter and helps you to keep your Markdown files looking sharp.
 
 <p align="center">
-    <img src=".assets/before-after.png">
+    <img src="https://raw.githubusercontent.com/mciwing/md-snakeoil/refs/heads/main/.assets/before-after.png">
 </p>
 
 <hr>
