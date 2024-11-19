@@ -1,4 +1,5 @@
 from pathlib import Path
+from textwrap import dedent
 
 import pytest
 
@@ -64,3 +65,15 @@ def test_run_output_file(tmp_path, example_markdown):
     assert output_file.exists()
     assert output_file.read_text() != example_markdown
     assert "x = [1, 2, 344, 3]" in output_file.read_text()
+
+
+def test_different_indentation_levels():
+    markdown_content = Path("tests/indentation.md").read_text()
+
+    formatter = Formatter()
+    formatted = formatter.format_markdown_content(
+        file_name="", content=dedent(markdown_content)
+    )
+
+    assert "    ```python\n    x = [1, 2, 3]\n    ```" in formatted
+    assert "        ```python\n        y = [4, 5, 6]\n        ```" in formatted
