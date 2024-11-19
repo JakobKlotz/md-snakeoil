@@ -1,13 +1,13 @@
 [tool.poetry]
 name = "md_snakeoil"
-version = "0.1.1"
+version = "0.1.2"
 description = "Format and lint Python code blocks within markdown files."
 readme = "README.md"
 authors = ["Jakob Klotz <jakob.klotz@mci.edu>"]
 license = "MIT"
 
 [tool.poetry.dependencies]
-python = "^3.12"
+python = "^3.11"
 ruff = "^0.7.4"  # used within the project to format & lint
 typer = "^0.13.0"
 
