@@ -5,20 +5,51 @@ on:
     types: [created]
 
 jobs:
-
   deploy:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
     - name: Set up python
-      uses: actions/setup-python@v3
+      uses: actions/setup-python@v5
       with:
         python-version: "3.12"
+
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         python -m pip install poetry
+
+    - name: Extract version from tag
+      id: extract_version
+      run: |
+        echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+
+    - name: Update version in pyproject.toml and push the change
+      run: |
+        poetry version ${{ steps.extract_version.outputs.VERSION }}
+        git config --global user.name 'github-actions[bot]'
+        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+        
+        # stage changes
+        git add pyproject.toml
+
+        # commit and push changes
+        git commit -m "feat: update version to ${{ steps.extract_version.outputs.VERSION }}"
+        
+        # delete tag, if it exists
+        git tag -d ${{ steps.extract_version.outputs.VERSION }} || true
+        git push origin --delete ${{ steps.extract_version.outputs.VERSION }} || true
+        
+        # create and push with tag
+        git tag ${{ steps.extract_version.outputs.VERSION }}
+        git push origin HEAD:main --tags
+
     - name: Build and publish
       env:
         PYPI_USERNAME: ${{ secrets.PYPI_USERNAME }}
