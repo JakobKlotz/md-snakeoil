@@ -86,10 +86,15 @@ class Formatter:
         result = content
         offset = 0
 
-        # look for ```python or ```py code blocks
-        # works with attributes like ```python title="example" ... as well
-        # and handle indentation
-        pattern = r"([ \t]*)(```(?:python| python|py| py|Python| Python)(?:[^\n]*)\n)(.*?)([ \t]*```)"  # noqa: E501
+        # look for particular info strings of fenced
+        # code blocks - e.g. "python", "py"; works with attributes
+        # like ```python title="example" ... as well; plus handles indentation
+        short_names = ["python", "py", "Python", "python3", "py3"]
+        info_strings = "|".join(short_names) + "| " + "| ".join(short_names)
+
+        pattern = (
+            rf"([ \t]*)(```(?:{info_strings})(?:[^\n]*)\n)(.*?)([ \t]*```)"  # noqa: E501
+        )
 
         matches = list(re.finditer(pattern, content, re.DOTALL))
         if len(matches) == 0:
