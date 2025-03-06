@@ -22,12 +22,12 @@ class Formatter:
     @staticmethod
     def read_markdown(file_path: str | Path) -> str:
         """Read a markdown file and return the content as string."""
-        return Path(file_path).read_text()
+        return Path(file_path).read_text(encoding="utf-8")
 
     @staticmethod
     def write_markdown(content: str, file_path: Path) -> None:
         """Write content to a markdown file."""
-        file_path.write_text(content)
+        file_path.write_text(content, encoding="utf-8")
 
     @staticmethod
     def detect_indent(text: str) -> str:
