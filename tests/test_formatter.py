@@ -59,7 +59,7 @@ def test_run_output_file(tmp_path, example_markdown):
     test_file.write_text(example_markdown)
 
     output_file = tmp_path / "formatted_index.md"
-    formatter.run(test_file, output_path=output_file)
+    formatter.run(test_file, output_path=output_file, inplace=False)
 
     # check if the output file was created with the expected content
     assert output_file.exists()

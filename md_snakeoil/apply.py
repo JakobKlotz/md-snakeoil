@@ -63,7 +63,7 @@ class Formatter:
                     [
                         "ruff",
                         "check",
-                        f"--select={",".join([*self.rules])}",
+                        f"--select={','.join([*self.rules])}",
                         "--fix",
                         "-",
                     ],
@@ -129,7 +129,7 @@ class Formatter:
     def run(
         self,
         file_path: str | Path,
-        inplace: bool = False,
+        inplace: bool = True,
         output_path: str | Path | None = None,
     ) -> None:
         """
