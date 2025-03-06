@@ -16,20 +16,12 @@ sharp. 🤙🏽
 
 ---
 
-<div align="center">
-  <div style="display: flex; justify-content: center;">
-    <div style="text-align: center; margin: 0 5px;">
-      <h2>Before</h2>
-      <img src="https://raw.githubusercontent.com/mciwing/md-snakeoil/refs/heads/main/.assets/before.png" alt="Before implementation" 
-        style="max-width: 400px; border-radius: 5%; width: 300px">
-    </div>
-    <div style="text-align: center; margin: 0 5px;">
-      <h2>After</h2>
-      <img src="https://raw.githubusercontent.com/mciwing/md-snakeoil/refs/heads/main/.assets/after.png" alt="After implementation" 
-        style="max-width: 400px; border-radius: 5%; width: 300px">
-    </div>
-  </div>
-</div>
+<h2 align="center"> before vs. after</h2>
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/mciwing/md-snakeoil/refs/heads/main/.assets/before.png" width="370" alt="Before implementation">
+  <img src="https://raw.githubusercontent.com/mciwing/md-snakeoil/refs/heads/main/.assets/after.png" width="370" alt="After implementation">
+</p>
 
 <hr>
 
