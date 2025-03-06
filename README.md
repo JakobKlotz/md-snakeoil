@@ -16,6 +16,8 @@ sharp. 🤙🏽
 
 ---
 
+<h2 align="center"> before vs. after</h2>
+
 <p align="center">
   <img src="https://raw.githubusercontent.com/mciwing/md-snakeoil/refs/heads/main/.assets/before.png" width="370" alt="Before implementation">
   <img src="https://raw.githubusercontent.com/mciwing/md-snakeoil/refs/heads/main/.assets/after.png" width="370" alt="After implementation">
