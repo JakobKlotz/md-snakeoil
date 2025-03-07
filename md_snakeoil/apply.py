@@ -1,5 +1,6 @@
 import re
 import subprocess
+import sys
 from pathlib import Path
 from textwrap import dedent, indent
 
@@ -47,6 +48,8 @@ class Formatter:
             # format code with ruff
             formatted = subprocess.check_output(
                 [
+                    sys.executable,
+                    "-m",
                     "ruff",
                     "format",
                     "--line-length",
@@ -61,6 +64,8 @@ class Formatter:
                 # lint code with ruff
                 linted = subprocess.check_output(
                     [
+                        sys.executable,
+                        "-m",
                         "ruff",
                         "check",
                         f"--select={','.join([*self.rules])}",
