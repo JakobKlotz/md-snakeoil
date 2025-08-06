@@ -1,4 +1,4 @@
-![Python](https://img.shields.io/badge/Python-3.12%20%7C%203.13-blue)
+![Python](https://img.shields.io/badge/Python-3.11%20%7C%203.12%20%7C%203.13-blue)
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
 
 <p align="center">
@@ -88,4 +88,25 @@ snakeoil path/to/directory
 ```
 
 This will recursively format and lint the Python code blocks in all Markdown
-files within `path/to/directory`.
+files within `path/to/directory`. 
+
+For example, format the example files within the `tests/` directory 
+(of this repository):
+
+```bash
+snakeoil tests/examples
+```
+
+```bash
+Formatting files... ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100% 0:00:01
+         Results for tests\examples
+┏━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━┓
+┃ Directory      ┃ File            ┃ Status ┃
+┡━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━┩
+│ tests\examples │ indentation.md  │ ✅     │
+│ tests\examples │ info_strings.md │ ✅     │
+│ tests\examples │ test.md         │ ✅     │
+└────────────────┴─────────────────┴────────┘
+All 3 files formatted successfully. ✨
+```
+
