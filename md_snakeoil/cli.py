@@ -15,7 +15,7 @@ def main(
         Path,
         typer.Argument(
             exists=True,
-            help="File or directory to format",
+            help="File or directory to process",
         ),
     ] = None,
     line_length: Annotated[
@@ -33,9 +33,20 @@ def main(
 ):
     """Format & lint Markdown files - either a single file or all files
     in a directory."""
+    if path is None:
+        typer.echo(
+            "Error: Please provide a path to a file or directory", err=True
+        )
+        raise typer.Exit(1)
+
+    if path.is_file() and path.suffix != ".md":
+        typer.echo("Error: Please provide a Markdown file", err=True)
+        raise typer.Exit(1)
+
     formatter = Formatter(
         line_length=line_length, rules=tuple(rules.split(","))
     )
+
     # single file
     if path.is_file():
         formatter.run(path, inplace=True)
