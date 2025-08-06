@@ -1,6 +1,6 @@
 [project]
 name = "md_snakeoil"
-version = "0.1.5"
+version = "0.1.6"
 description = "Format and lint Python code blocks within markdown files."
 readme = "README.md"
 authors = [
