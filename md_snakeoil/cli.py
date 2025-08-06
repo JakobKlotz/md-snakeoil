@@ -1,6 +1,10 @@
 from pathlib import Path
 
 import typer
+from rich import print as rich_print
+from rich.console import Console
+from rich.progress import track
+from rich.table import Table
 from typing_extensions import Annotated
 
 from md_snakeoil.apply import Formatter
@@ -49,24 +53,50 @@ def main(
 
     # single file
     if path.is_file():
-        formatter.run(path, inplace=True)
+        formatter.run(path, inplace=True, quiet=True)
         typer.echo(f"Formatted {path}")
 
     # process the directory
     else:
-        for markdown_file in path.glob("**/*.md"):
+        files = list(path.glob("**/*.md"))
+        if not files:
+            typer.echo(f"No Markdown files found in {path}")
+            raise typer.Exit(0)
+
+        # track processed files and display overview results as table
+        n_errors = 0
+        table = Table(
+            "Directory",
+            "File",
+            "Status",
+            title=f"Results for {path}",
+        )
+
+        for markdown_file in track(files, description="Formatting files..."):
             try:
                 formatter.run(markdown_file, inplace=True)
-                typer.echo(f"Formatted {markdown_file}")
+                status = ":white_check_mark:"
             except UnicodeDecodeError:
-                typer.echo(
-                    f"Error: Could not decode {markdown_file} - skipping file",
-                    err=True,
-                )
+                status = (":cross_mark: Decode Error",)
+                n_errors += 1
             except Exception as e:
-                typer.echo(
-                    f"Error processing {markdown_file}: {str(e)}", err=True
-                )
+                status = f":cross_mark: {str(e)[:30]}..."
+                n_errors += 1
+
+            # add processing result to table
+            table.add_row(
+                str(markdown_file.parent), markdown_file.name, status
+            )
+
+        Console().print(table)
+
+        # summary message
+        if n_errors > 0:
+            rich_print(f"{n_errors} files could not be formatted. :warning:")
+        else:
+            rich_print(
+                f"All {len(files)} files formatted successfully. :sparkles:"
+            )
 
 
 if __name__ == "__main__":

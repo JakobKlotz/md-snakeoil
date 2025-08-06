@@ -78,6 +78,3 @@ def test_directory_processing():
 
         result = runner.invoke(app, [tmpdir])
         assert result.exit_code == 0
-        assert f"Formatted {md1}" in result.stdout
-        assert f"Formatted {md2}" in result.stdout
-        assert "test.txt" not in result.stdout
