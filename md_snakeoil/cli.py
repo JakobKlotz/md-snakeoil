@@ -9,7 +9,7 @@ app = typer.Typer(help="Format and lint Python code blocks in Markdown files.")
 
 
 # default command
-@app.callback(invoke_without_command=True)
+@app.command()
 def main(
     path: Annotated[
         Path,
