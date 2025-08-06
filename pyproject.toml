@@ -9,8 +9,9 @@ authors = [
 license = "MIT"
 requires-python = ">=3.12"
 dependencies = [
-    "ruff>=0.9.9",  # used within the project to format & lint
-    "typer>=0.15.2",
+    # used within the project to format and lint
+    "ruff>=0.12.7",
+    "typer>=0.16.0",
 ]
 
 [dependency-groups]

@@ -60,8 +60,8 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "ruff", specifier = ">=0.9.9" },
-    { name = "typer", specifier = ">=0.15.2" },
+    { name = "ruff", specifier = ">=0.12.7" },
+    { name = "typer", specifier = ">=0.16.0" },
 ]
 
 [package.metadata.requires-dev]
