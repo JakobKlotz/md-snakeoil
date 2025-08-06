@@ -1,29 +1,33 @@
-[tool.poetry]
+[project]
 name = "md_snakeoil"
 version = "0.1.5"
 description = "Format and lint Python code blocks within markdown files."
 readme = "README.md"
-authors = ["Jakob Klotz <jakob.klotz@mci.edu>"]
+authors = [
+    {name = "Jakob Klotz", email = "me@jakob-klotz.at"},
+]
 license = "MIT"
+requires-python = ">=3.12"
+dependencies = [
+    "ruff>=0.9.9",  # used within the project to format & lint
+    "typer>=0.15.2",
+]
 
-[tool.poetry.dependencies]
-python = "^3.11"
-ruff = "^0.9.9"  # used within the project to format & lint
-typer = "^0.15.2"
-
-
-[tool.poetry.group.dev.dependencies]
-pytest = "^8.3.5"
-
+[dependency-groups]
+dev = [
+    "pytest>=8.3.5",
+]
 
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["uv_build>=0.8.5,<0.9.0"]
+build-backend = "uv_build"
 
+[tool.uv.build-backend]
+module-name = "md_snakeoil"
+module-root = ""
 
-[tool.poetry.scripts]
+[project.scripts]
 snakeoil = "md_snakeoil.cli:app"
-
 
 [tool.ruff]
 line-length = 79
