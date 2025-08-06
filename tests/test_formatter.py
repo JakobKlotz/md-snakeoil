@@ -8,12 +8,12 @@ from md_snakeoil import Formatter
 
 @pytest.fixture
 def example_markdown():
-    return Path("tests/test.md").read_text()
+    return Path("tests/examples/test.md").read_text()
 
 
 def test_read_markdown(example_markdown):
     formatter = Formatter()
-    content = formatter.read_markdown("tests/test.md")
+    content = formatter.read_markdown("tests/examples/test.md")
     assert content == example_markdown
 
 
@@ -68,7 +68,7 @@ def test_run_output_file(tmp_path, example_markdown):
 
 
 def test_different_indentation_levels():
-    markdown_content = Path("tests/indentation.md").read_text()
+    markdown_content = Path("tests/examples/indentation.md").read_text()
 
     formatter = Formatter()
     formatted = formatter.format_markdown_content(
@@ -80,7 +80,7 @@ def test_different_indentation_levels():
 
 
 def test_different_info_strings():
-    markdown_content = Path("tests/info_strings.md").read_text()
+    markdown_content = Path("tests/examples/info_strings.md").read_text()
     formatter = Formatter()
     formatted = formatter.format_markdown_content(
         file_name="", content=dedent(markdown_content)
