@@ -39,7 +39,7 @@ class Formatter:
                 return re.match(r"^\s*", line).group()
         return ""  # empty string, if no indentation is found
 
-    def format_single_block(self, code: str) -> str:
+    def format_single_block(self, code: str, quiet: bool = True) -> str:
         try:
             # detect and remove indentation
             indent_str = self.detect_indent(code)
@@ -58,6 +58,7 @@ class Formatter:
                 ],
                 input=dedented_code,
                 encoding="utf-8",
+                stderr=subprocess.DEVNULL if quiet else None,
             )
 
             if len(self.rules) != 0:
@@ -74,6 +75,7 @@ class Formatter:
                     ],
                     input=formatted,
                     encoding="utf-8",
+                    stderr=subprocess.DEVNULL if quiet else None,
                 )
                 # reapply original indentation to linted code
                 return indent(linted.rstrip(), indent_str)
@@ -86,7 +88,9 @@ class Formatter:
             print(f"Warning: Failed to format code block: {e}")
             return code
 
-    def format_markdown_content(self, *, file_name: str, content: str) -> str:
+    def format_markdown_content(
+        self, *, file_name: str, content: str, quiet: bool = True
+    ) -> str:
         """Replace code blocks in markdown content with formatted versions."""
         result = content
         offset = 0
@@ -114,7 +118,9 @@ class Formatter:
                 )  # capture closing backticks with their indent
 
                 # format the block while preserving indentation
-                formatted_block = self.format_single_block(original_block)
+                formatted_block = self.format_single_block(
+                    original_block, quiet=quiet
+                )
 
                 # calculate positions considering the offset
                 start = match.start() + offset
@@ -136,6 +142,7 @@ class Formatter:
         file_path: str | Path,
         inplace: bool = True,
         output_path: str | Path | None = None,
+        quiet: bool = True,
     ) -> None:
         """
         Format Python code blocks in a markdown file.
@@ -145,6 +152,7 @@ class Formatter:
             inplace: If True, update the file in place
             output_path: If provided, write formatted content to this path
                         (ignored if inplace=True)
+            quiet: If True, suppress ruff output
         """
         if not inplace and output_path is None:
             raise ValueError("Provide an output_path if inplace=False.")
@@ -152,7 +160,7 @@ class Formatter:
         file_path = Path(file_path)
         markdown = self.read_markdown(file_path)
         formatted_content = self.format_markdown_content(
-            file_name=str(file_path), content=markdown
+            file_name=str(file_path), content=markdown, quiet=quiet
         )
 
         if inplace:
