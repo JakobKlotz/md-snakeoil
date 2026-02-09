@@ -44,6 +44,19 @@ That's it! 🚀
 > If, your using [`pipx`](https://pipx.pypa.io/stable/installation/), 
 > install it with `pipx install md-snakeoil`
 
+## `pre-commit` hook
+
+To run `md-snakeoil` with `pre-commit` add following to your 
+`.pre-commit-config.yaml`:
+
+```yaml
+repos:
+  - repo: https://github.com/JakobKlotz/md-snakeoil
+    rev: v0.1.7
+    hooks:
+      - id: snakeoil
+```
+
 ## Command Line Interface
 
 The package provides a command-line interface (CLI) using `typer`.
@@ -108,17 +121,4 @@ Formatting files... ━━━━━━━━━━━━━━━━━━━━
 │ tests\examples │ test.md         │ ✅     │
 └────────────────┴─────────────────┴────────┘
 All 3 files formatted successfully. ✨
-```
-
-## `pre-commit` hook
-
-To run `md-snakeoil` with `pre-commit` add following to your 
-`.pre-commit-config.yaml`:
-
-```yaml
-repos:
-  - repo: https://github.com/JakobKlotz/md-snakeoil
-    rev: v0.1.7
-    hooks:
-      - id: snakeoil
 ```
