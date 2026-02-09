@@ -1,14 +1,12 @@
-![Python](https://img.shields.io/badge/Python-3.11%20%7C%203.12%20%7C%203.13-blue)
-![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
+![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=white)
+![License: MIT](https://img.shields.io/badge/License-MIT-lightgrey.svg?style=for-the-badge)
 
 <p align="center">
     <img src="https://raw.githubusercontent.com/mciwing/md-snakeoil/refs/heads/main/.assets/md-snakeoil.png" width="400" height="400">
 </p>
 
-A Python package/CLI to format and lint Python code blocks within Markdown 
-files.
-Specifically designed for Markdown files used with 
-[`mkdocs-material`](https://squidfunk.github.io/mkdocs-material/).
+Format and lint Python code blocks within Markdown files. Usable as CLI, 
+`pre-commit` hook or Python package.
 
 `md-snakeoil` is built on the awesome [`ruff`](https://docs.astral.sh/ruff/)
 formatter and linter and helps you to keep your Markdown files looking 
@@ -27,10 +25,11 @@ sharp. 🤙🏽
 
 ## Quickstart
 
-Use [`pipx`](https://pipx.pypa.io/stable/installation/): 
+With [`uv`](https://docs.astral.sh/uv/getting-started/installation/) install 
+it as a tool:
 
 ```bash
-pipx install md-snakeoil
+uv tool install md-snakeoil
 ```
 
 Format and lint Markdown files within a directory (recursively):
@@ -42,7 +41,21 @@ snakeoil path/to/directory
 That's it! 🚀
 
 > [!NOTE]
-> If, your using [`uv`](https://docs.astral.sh/uv/getting-started/installation/), install it with `uv tool install md-snakeoil`
+> If, your using [`pipx`](https://pipx.pypa.io/stable/installation/), 
+> install it with `pipx install md-snakeoil`
+
+## `pre-commit` hook
+
+To run `md-snakeoil` with `pre-commit` add following to your 
+`.pre-commit-config.yaml`:
+
+```yaml
+repos:
+  - repo: https://github.com/JakobKlotz/md-snakeoil
+    rev: v0.1.7
+    hooks:
+      - id: snakeoil
+```
 
 ## Command Line Interface
 
@@ -109,4 +122,3 @@ Formatting files... ━━━━━━━━━━━━━━━━━━━━
 └────────────────┴─────────────────┴────────┘
 All 3 files formatted successfully. ✨
 ```
-
