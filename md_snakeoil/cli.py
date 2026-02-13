@@ -1,11 +1,11 @@
 from pathlib import Path
+from typing import Annotated
 
 import typer
 from rich import print as rich_print
 from rich.console import Console
 from rich.progress import track
 from rich.table import Table
-from typing_extensions import Annotated
 
 from md_snakeoil.apply import Formatter
 

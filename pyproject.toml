@@ -11,7 +11,7 @@ requires-python = ">=3.11"
 dependencies = [
     # used within the project to format and lint
     "ruff>=0.12.7",
-    "typer>=0.16.0",
+    "typer>=0.23.0",
 ]
 
 [dependency-groups]
