@@ -10,8 +10,10 @@ class Formatter:
     Format and lint Python code blocks within markdown files.
 
     Args:
-        line_length: Maximum line length for formatted code
-        rules: Tuple of rules to apply during linting
+        line_length (int): Maximum line length for formatted code.
+            Defaults to 79.
+        rules (tuple[str, ...]): Tuple of rules to apply during linting.
+            Default ("I", "W").
     """
 
     def __init__(
@@ -143,16 +145,25 @@ class Formatter:
         inplace: bool = True,
         output_path: str | Path | None = None,
         quiet: bool = True,
-    ) -> None:
+        check: bool = False,
+    ) -> tuple[bool, str]:
         """
         Format Python code blocks in a markdown file.
 
         Args:
-            file_path: Markdown file path
-            inplace: If True, update the file in place
-            output_path: If provided, write formatted content to this path
-                        (ignored if inplace=True)
-            quiet: If True, suppress ruff output
+            file_path (str | Path): Markdown file path
+            inplace (bool): Whether to update the file in place.
+                Defaults to `True`.
+            output_path (str | Path): If provided, write formatted content to
+                this path (ignored if `inplace=True`). By default `None`.
+            quiet (bool): Whether to suppress `ruff` output. Defaults to
+                `True`.
+            check (bool): Check if files would be reformatted without writing
+                changes. Defaults to `False`.
+
+        Returns:
+            tuple[bool, str]: Indicating if the content changed and
+                appropriate message.
         """
         if not inplace and output_path is None:
             raise ValueError("Provide an output_path if inplace=False.")
@@ -162,8 +173,17 @@ class Formatter:
         formatted_content = self.format_markdown_content(
             file_name=str(file_path), content=markdown, quiet=quiet
         )
+        has_changed = formatted_content != markdown
 
-        if inplace:
-            self.write_markdown(formatted_content, file_path)
+        if not has_changed:
+            msg = f"{file_path} already formatted!"
+        elif check:
+            msg = f"Would reformat: {file_path}"
         else:
-            self.write_markdown(formatted_content, Path(output_path))
+            if inplace:
+                self.write_markdown(formatted_content, file_path)
+            else:
+                self.write_markdown(formatted_content, Path(output_path))
+            msg = f"Formatted: {file_path}"
+
+        return has_changed, msg

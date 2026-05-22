@@ -2,10 +2,6 @@ from pathlib import Path
 from typing import Annotated
 
 import typer
-from rich import print as rich_print
-from rich.console import Console
-from rich.progress import track
-from rich.table import Table
 
 from md_snakeoil.apply import Formatter
 
@@ -34,9 +30,17 @@ def main(
             help="Ruff rules to apply (comma-separated)",
         ),
     ] = "I,W",
+    check: Annotated[
+        bool,
+        typer.Option(
+            help="Check if files would be reformatted without writing changes"
+        ),
+    ] = False,
 ):
-    """Format & lint Markdown files - either a single file or all files
-    in a directory."""
+    """
+    Format & lint Markdown files. Either a single file or all files in a
+    directory,
+    """
     if path is None:
         typer.echo(
             "Error: Please provide a path to a file or directory", err=True
@@ -53,8 +57,8 @@ def main(
 
     # single file
     if path.is_file():
-        formatter.run(path, inplace=True, quiet=True)
-        typer.echo(f"Formatted {path}")
+        _, msg = formatter.run(path, inplace=True, check=check)
+        typer.echo(msg)
 
     # process the directory
     else:
@@ -63,40 +67,32 @@ def main(
             typer.echo(f"No Markdown files found in {path}")
             raise typer.Exit(0)
 
-        # track processed files and display overview results as table
-        n_errors = 0
-        table = Table(
-            "Directory",
-            "File",
-            "Status",
-            title=f"Results for {path}",
-        )
-
-        for markdown_file in track(files, description="Formatting files..."):
+        files_changed = []
+        errors = 0
+        for markdown_file in files:
             try:
-                formatter.run(markdown_file, inplace=True)
-                status = ":white_check_mark:"
+                has_changed, msg = formatter.run(
+                    markdown_file, inplace=True, check=check
+                )
+                files_changed.append(has_changed)
             except UnicodeDecodeError:
-                status = (":cross_mark: Decode Error",)
-                n_errors += 1
+                msg = f"{markdown_file} :cross_mark: Decode Error"
+                errors += 1
             except Exception as e:
-                status = f":cross_mark: {str(e)[:30]}..."
-                n_errors += 1
+                msg = f"{markdown_file} :cross_mark: {str(e)[:30]}..."
+                errors += 1
+            print(msg)
 
-            # add processing result to table
-            table.add_row(
-                str(markdown_file.parent), markdown_file.name, status
-            )
-
-        Console().print(table)
-
-        # summary message
-        if n_errors > 0:
-            rich_print(f"{n_errors} files could not be formatted. :warning:")
-        else:
-            rich_print(
-                f"All {len(files)} files formatted successfully. :sparkles:"
-            )
+        sum_files_changed, n_files = sum(files_changed), len(files)
+        print(
+            f"{sum_files_changed} "
+            f"{'would be reformatted' if check else 'formatted'}, "
+            f"{n_files - sum_files_changed - errors} already formatted."
+        )
+        if errors:
+            print(f"{errors} errors.")
+        if sum_files_changed and check:
+            raise typer.Exit(1)
 
 
 if __name__ == "__main__":

@@ -1,6 +1,6 @@
 [project]
 name = "md_snakeoil"
-version = "0.1.8"
+version = "0.1.9"
 description = "Format and lint Python code blocks within markdown files."
 readme = "README.md"
 authors = [
@@ -20,7 +20,7 @@ dev = [
 ]
 
 [build-system]
-requires = ["uv_build>=0.10.0,<0.11.0"]
+requires = ["uv_build>=0.10.0,<0.12.0"]
 build-backend = "uv_build"
 
 [tool.uv.build-backend]

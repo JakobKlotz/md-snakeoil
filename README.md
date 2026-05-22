@@ -52,7 +52,7 @@ To run `md-snakeoil` with `pre-commit` add following to your
 ```yaml
 repos:
   - repo: https://github.com/JakobKlotz/md-snakeoil
-    rev: v0.1.7
+    rev: v0.1.9
     hooks:
       - id: snakeoil
 ```
@@ -67,21 +67,22 @@ The package provides a command-line interface (CLI) using `typer`.
 snakeoil --help
 ```
 
-```                                                                                                                                                                                                                                                                                                   
- Usage: snakeoil [OPTIONS] [PATH] COMMAND [ARGS]...                                                                                              
+```                                                                                                                  
+ Usage: snakeoil [OPTIONS] [PATH]                                                                                            
                                                                                                                                                  
- Format and lint Python code blocks in Markdown files.
+ Format & lint Markdown files. Either a single file or all files in a directory,
 
 ╭─ Arguments ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
-│   path      [PATH]  File or directory to format [default: None]                                                                               │
+│   path      [PATH]  File or directory to process                                                                                              │
 ╰───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
 ╭─ Options ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
 │ --line-length               INTEGER  Maximum line length for the formatted code [default: 79]                                                 │
 │ --rules                     TEXT     Ruff rules to apply (comma-separated) [default: I,W]                                                     │
+│ --check --no-check                   Check if files would be reformatted without writing changes [default: no-check]                          │
 │ --install-completion                 Install completion for the current shell.                                                                │
 │ --show-completion                    Show completion for the current shell, to copy it or customize the installation.                         │
 │ --help                               Show this message and exit.                                                                              │
-╰───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+╰───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
 ```
 
 By default, the line length is set to 79 characters, and the Ruff rules `W` and
@@ -107,18 +108,10 @@ For example, format the example files within the `tests/` directory
 (of this repository):
 
 ```bash
-snakeoil tests/examples
-```
+> snakeoil tests/examples
 
-```bash
-Formatting files... ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100% 0:00:01
-         Results for tests\examples
-┏━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━┓
-┃ Directory      ┃ File            ┃ Status ┃
-┡━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━┩
-│ tests\examples │ indentation.md  │ ✅     │
-│ tests\examples │ info_strings.md │ ✅     │
-│ tests\examples │ test.md         │ ✅     │
-└────────────────┴─────────────────┴────────┘
-All 3 files formatted successfully. ✨
+Formatted: tests\examples\indentation.md
+Formatted: tests\examples\info_strings.md
+Formatted: tests\examples\test.md
+3 formatted, 0 already formatted.
 ```

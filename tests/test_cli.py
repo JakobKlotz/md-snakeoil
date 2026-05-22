@@ -1,12 +1,24 @@
-import shutil
 import tempfile
 from pathlib import Path
 
+import pytest
 from typer.testing import CliRunner
 
 from md_snakeoil.cli import app
 
 runner = CliRunner()
+
+
+@pytest.fixture
+def test_file(tmp_path):
+    example_markdown = Path("tests/examples/test.md").read_text()
+
+    def _make_test_file(name: str) -> Path:
+        f = tmp_path / name
+        f.write_text(example_markdown)
+        return f
+
+    return _make_test_file
 
 
 def test_no_path_provided():
@@ -35,29 +47,29 @@ def test_nonexistent_path():
     assert result.exit_code == 2  # Typer's default for invalid argument
 
 
-def test_single_markdown():
+def test_single_markdown(test_file):
     """Test processing a single markdown."""
     # Make a temporary copy
-    copy = Path("tests/examples/test_copy.md")
-    shutil.copy(Path("tests/examples/test.md"), copy)
-
-    result = runner.invoke(app, [str(copy)])
+    file_name = str(test_file("copy.md"))
+    result = runner.invoke(app, [file_name])
     assert result.exit_code == 0
-    assert f"Formatted {copy}" in result.output, result
-
-    # clean up
-    copy.unlink()
+    assert f"Formatted: {file_name}" in result.output, result
 
     # another run with different options
-    shutil.copy(Path("tests/examples/test.md"), copy)
+    file_name = str(test_file("another-copy.md"))
     result = runner.invoke(
-        app, [str(copy), "--line-length", "120", "--rules", "E,F"]
+        app, [file_name, "--line-length", "120", "--rules", "E,F"]
     )
     assert result.exit_code == 0
-    assert f"Formatted {copy}" in result.output, result
+    assert f"Formatted: {file_name}" in result.output, result
 
-    # clean up
-    copy.unlink()
+
+def test_single_markdown_check(test_file):
+    """Single markdown using the check option."""
+    file_name = str(test_file("_.md"))
+    result = runner.invoke(app, [file_name, "--check"])
+    assert result.exit_code == 0
+    assert f"Would reformat: {file_name}"
 
 
 def test_directory_processing():
