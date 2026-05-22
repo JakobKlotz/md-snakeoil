@@ -53,7 +53,7 @@ def test_single_markdown(test_file):
     file_name = str(test_file("copy.md"))
     result = runner.invoke(app, [file_name])
     assert result.exit_code == 0
-    assert f"Formatted {file_name}" in result.output, result
+    assert f"Formatted: {file_name}" in result.output, result
 
     # another run with different options
     file_name = str(test_file("another-copy.md"))
@@ -61,7 +61,15 @@ def test_single_markdown(test_file):
         app, [file_name, "--line-length", "120", "--rules", "E,F"]
     )
     assert result.exit_code == 0
-    assert f"Formatted {file_name}" in result.output, result
+    assert f"Formatted: {file_name}" in result.output, result
+
+
+def test_single_markdown_check(test_file):
+    """Single markdown using the check option."""
+    file_name = str(test_file("_.md"))
+    result = runner.invoke(app, [file_name, "--check"])
+    assert result.exit_code == 0
+    assert f"Would reformat: {file_name}"
 
 
 def test_directory_processing():
