@@ -92,8 +92,9 @@ def test_different_info_strings(formatter):
 
 def test_check_mode(formatter, test_file, example_markdown):
     # With an unformatted file
-    has_changed = formatter.run(test_file, check=True)
-    assert isinstance(has_changed, bool)
+    has_changed, msg = formatter.run(test_file, check=True)
+    assert has_changed
+    assert msg == f"Would reformat: {test_file}"
 
     # Check if the file was left untouched
     assert test_file.read_text() == example_markdown
@@ -101,5 +102,6 @@ def test_check_mode(formatter, test_file, example_markdown):
     # With a formatted file
     formatter.run(test_file, inplace=True)
     # Perform a check
-    has_changed = formatter.run(test_file, check=True)
+    has_changed, msg = formatter.run(test_file, check=True)
     assert not has_changed
+    assert msg == f"{test_file} already formatted!"
