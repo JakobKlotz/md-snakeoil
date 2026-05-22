@@ -89,3 +89,22 @@ def test_different_info_strings():
     assert "```py\ny = [4, 5, 6]\n```" in formatted
     assert "```Python\nz = [7, 8, 9]\n```" in formatted
     assert "```python startline=3 $%@#$\na = [10, 11, 12]\n```" in formatted
+
+
+def test_check_mode(tmp_path, example_markdown):
+    # With an unformatted file
+    formatter = Formatter()
+    test_file = tmp_path / "copy.md"
+    test_file.write_text(example_markdown)
+
+    has_changed = formatter.run(test_file, check=True)
+    assert isinstance(has_changed, bool)
+
+    # Check if the file was left untouched
+    assert test_file.read_text() == example_markdown
+
+    # With a formatted file
+    formatter.run(test_file, inplace=True)
+    # Perform a check
+    has_changed = formatter.run(test_file, check=True)
+    assert not has_changed
