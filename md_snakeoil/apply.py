@@ -146,7 +146,7 @@ class Formatter:
         output_path: str | Path | None = None,
         quiet: bool = True,
         check: bool = False,
-    ) -> bool | None:
+    ) -> tuple[bool, str]:
         """
         Format Python code blocks in a markdown file.
 
@@ -162,8 +162,8 @@ class Formatter:
                 changes. Defaults to `False`.
 
         Returns:
-            bool | None: Boolean if `check=True` indicating if the content
-                changed, else `None`.
+            tuple[bool, str]: Indicating if the content changed and
+                appropriate message.
         """
         if not inplace and output_path is None:
             raise ValueError("Provide an output_path if inplace=False.")
@@ -173,13 +173,17 @@ class Formatter:
         formatted_content = self.format_markdown_content(
             file_name=str(file_path), content=markdown, quiet=quiet
         )
+        has_changed = formatted_content != markdown
 
-        if check:
-            return formatted_content != markdown
-
-        if inplace:
-            self.write_markdown(formatted_content, file_path)
+        if not has_changed:
+            msg = f"{file_path} already formatted!"
+        elif check:
+            msg = f"Would reformat: {file_path}"
         else:
-            self.write_markdown(formatted_content, Path(output_path))
+            if inplace:
+                self.write_markdown(formatted_content, file_path)
+            else:
+                self.write_markdown(formatted_content, Path(output_path))
+            msg = f"Formatted: {file_path}"
 
-        return None
+        return has_changed, msg
